@@ -135,3 +135,7 @@ footer {
   margin-top: 50px;
   font-size: 14px;
 }
+.navbar .logo img {
+  height: 40px;
+  width: auto;
+}

@@ -166,3 +166,23 @@ footer {
 .logo-link:active {
   color: white;
 }
+/* WhatsApp bottom link */
+.whatsapp-btn {
+  color: black;                /* Make text black */
+  background: none;            /* Remove button background */
+  text-decoration: none;       /* Remove underline */
+  border: 1px solid black;     /* Optional: adds a subtle button border */
+  padding: 8px 15px;           /* Space inside the button */
+  border-radius: 5px;          /* Rounded corners */
+  font-weight: 600;            /* Bold text */
+  display: inline-block;       /* Allows padding and margin */
+}
+
+.whatsapp-btn:hover,
+.whatsapp-btn:active,
+.whatsapp-btn:focus {
+  color: black;                /* Text stays black on hover/click */
+  background: none;            /* No hover background */
+  text-decoration: none;       /* No underline on hover */
+  outline: none;               /* Remove default focus outline */
+}

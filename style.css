@@ -196,3 +196,9 @@ footer {
 .whatsapp-container p {
   margin-bottom: 10px;
 }
+/* Ensure WhatsApp button is centered */
+.whatsapp-container .whatsapp-btn {
+  display: block;      /* make it a block element */
+  margin: 10px auto 0; /* top spacing 10px, auto left/right to center */
+  text-align: center;  /* centers text inside the button */
+}

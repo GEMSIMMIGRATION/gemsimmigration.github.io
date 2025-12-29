@@ -229,3 +229,32 @@ footer {
   position: relative; /* above overlay */
   z-index: 1;
 }
+/* Hero section background */
+.hero {
+  background-image: url('hero-bg.jpg'); /* your image file */
+  background-size: cover;               /* make it cover the whole hero */
+  background-position: center;          /* center the image */
+  background-repeat: no-repeat;
+  color: white;                         /* text color */
+  text-align: center;
+  padding: 120px 20px;                  /* spacing above and below text */
+  position: relative;
+}
+
+/* Optional: overlay for text readability */
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4); /* dark overlay at 40% opacity */
+  z-index: 0;
+}
+
+/* Make hero content appear above overlay */
+.hero h1,
+.hero p,
+.hero a {
+  position: relative;
+  z-index: 1;
+}

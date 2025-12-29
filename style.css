@@ -287,13 +287,10 @@ footer {
   justify-content: center;
   box-shadow: 0 6px 15px rgba(0,0,0,0.3);
   z-index: 9999;
-}
-
-.whatsapp-float img {
-  width: 28px;
-  height: 28px;
+  transition: transform 0.2s ease;
 }
 
 .whatsapp-float:hover {
   transform: scale(1.08);
 }
+

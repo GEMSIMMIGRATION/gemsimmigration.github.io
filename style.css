@@ -9,6 +9,7 @@
 body {
   line-height: 1.6;
   color: #222;
+  font-family: 'Biome', sans-serif; /* Apply Biome site-wide */
 }
 
 /* Navbar */
@@ -46,24 +47,70 @@ body {
   text-decoration: underline;
 }
 
+/* Navbar logo image + text */
+.navbar .logo img {
+  height: 40px;
+  width: auto;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logo-link img {
+  height: 28px;
+  width: auto;
+  margin-right: 8px;
+}
+
+.logo-text {
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.logo-link,
+.logo-link:visited,
+.logo-link:hover,
+.logo-link:active {
+  color: white;
+}
+
 /* Hero Section */
 .hero {
-  background: #f2f6f9;
-  padding: 80px 20px;
+  background-image: url('hero-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
   text-align: center;
+  padding: 120px 20px;
+  position: relative;
 }
 
-.hero h1 {
-  color: #004f7c;
-  font-size: 36px;
-  margin-bottom: 20px;
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4); /* overlay for readability */
+  z-index: 0;
 }
 
+.hero h1,
+.hero p,
+.hero a {
+  position: relative; /* above overlay */
+  z-index: 1;
+  color: white;
+}
+
+.hero h1,
 .hero p {
-  font-size: 18px;
-  max-width: 700px;
-  margin: auto;
-  margin-bottom: 30px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* subtle shadow for readability */
 }
 
 .hero .btn {
@@ -75,14 +122,16 @@ body {
   margin: 5px;
 }
 
-.btn-primary {
-  background: #007acc;
+.hero .btn-primary {
+  background-color: #007bff;
   color: white;
+  border: none;
 }
 
-.btn-secondary {
-  background: #e0e0e0;
-  color: #004f7c;
+.hero .btn-secondary {
+  background-color: #25d366;
+  color: white;
+  border: none;
 }
 
 /* Sections */
@@ -97,12 +146,16 @@ body {
   margin-bottom: 20px;
   font-size: 28px;
   text-align: center;
+  font-family: 'Biome', sans-serif;
+  font-weight: 600;
 }
 
 .content p {
   font-size: 16px;
   margin-bottom: 15px;
   text-align: center;
+  font-family: 'Biome', sans-serif;
+  font-weight: 400;
 }
 
 /* Services grid */
@@ -125,6 +178,8 @@ body {
 .card h3 {
   color: #007acc;
   margin-bottom: 10px;
+  font-family: 'Biome', sans-serif;
+  font-weight: 600;
 }
 
 /* Footer */
@@ -134,160 +189,42 @@ footer {
   padding: 25px 10px;
   margin-top: 50px;
   font-size: 14px;
-}
-.navbar .logo img {
-  height: 40px;
-  width: auto;
-}
-/* Logo + text container */
-.logo-link {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
+  font-family: 'Biome', sans-serif;
+  font-weight: 400;
 }
 
-/* Logo image */
-.logo-link img {
-  height: 28px;
-  width: auto;
-  margin-right: 8px;
-}
-
-/* Logo text */
-.logo-text {
-  color: white;
-  font-size: 16px;
-  font-weight: 600;
-  white-space: nowrap;
-}
-.logo-link,
-.logo-link:visited,
-.logo-link:hover,
-.logo-link:active {
-  color: white;
-}
 /* WhatsApp bottom link */
 .whatsapp-btn {
-  color: black;                /* Make text black */
-  background: none;            /* Remove button background */
-  text-decoration: none;       /* Remove underline */
-  border: 1px solid black;     /* Optional: adds a subtle button border */
-  padding: 8px 15px;           /* Space inside the button */
-  border-radius: 5px;          /* Rounded corners */
-  font-weight: 600;            /* Bold text */
-  display: inline-block;       /* Allows padding and margin */
+  color: black;
+  background: none;
+  text-decoration: none;
+  border: 1px solid black;
+  padding: 8px 15px;
+  border-radius: 5px;
+  font-weight: 600;
+  display: inline-block;
 }
 
 .whatsapp-btn:hover,
 .whatsapp-btn:active,
 .whatsapp-btn:focus {
-  color: black;                /* Text stays black on hover/click */
-  background: none;            /* No hover background */
-  text-decoration: none;       /* No underline on hover */
-  outline: none;               /* Remove default focus outline */
-}
-/* Center WhatsApp section */
-.whatsapp-container {
-  text-align: center;  /* Centers text and link inside */
-  margin-top: 20px;    /* Optional spacing above */
+  color: black;
+  background: none;
+  text-decoration: none;
+  outline: none;
 }
 
-/* Optional: spacing between number and button */
+.whatsapp-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
 .whatsapp-container p {
   margin-bottom: 10px;
 }
-/* Ensure WhatsApp button is centered */
+
 .whatsapp-container .whatsapp-btn {
-  display: block;      /* make it a block element */
-  margin: 10px auto 0; /* top spacing 10px, auto left/right to center */
-  text-align: center;  /* centers text inside the button */
-}
-.hero {
-  background-image: url('hero-bg.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  color: white;
+  display: block;
+  margin: 10px auto 0;
   text-align: center;
-  padding: 120px 20px;
-  position: relative;
-}
-
-/* Optional overlay for readability */
-.hero::before {
-  content: "";
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.4);
-  z-index: 0;
-}
-
-.hero h1,
-.hero p,
-.hero a {
-  position: relative; /* above overlay */
-  z-index: 1;
-}
-/* Hero section background */
-.hero {
-  background-image: url('hero-bg.jpg'); /* your image file */
-  background-size: cover;               /* make it cover the whole hero */
-  background-position: center;          /* center the image */
-  background-repeat: no-repeat;
-  color: white;                         /* text color */
-  text-align: center;
-  padding: 120px 20px;                  /* spacing above and below text */
-  position: relative;
-}
-
-/* Optional: overlay for text readability */
-.hero::before {
-  content: "";
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.4); /* dark overlay at 40% opacity */
-  z-index: 0;
-}
-
-/* Make hero content appear above overlay */
-.hero h1,
-.hero p,
-.hero a {
-  position: relative;
-  z-index: 1;
-}
-/* Apply Biome to the whole site */
-body {
-  font-family: 'Biome', sans-serif;
-}
-h1, h2, h3 {
-  font-family: 'Biome', sans-serif;
-  font-weight: 600; /* slightly bolder for headings */
-}
-
-p, a, li {
-  font-family: 'Biome', sans-serif;
-  font-weight: 400; /* regular weight for body text */
-}
-.hero h1,
-.hero p {
-  color: white;       /* makes headings and paragraph text white */
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* optional: subtle shadow for readability */
-}
-.hero h1,
-.hero p {
-  color: white;       /* makes headings and paragraph text white */
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* optional: subtle shadow for readability */
-}
-.hero .btn-primary,
-.hero .btn-secondary {
-  color: white;                   /* text white */
-  background-color: #007bff;      /* blue background for visibility */
-  border: none;
-}
-
-.hero .btn-secondary {
-  background-color: #25d366;      /* green for WhatsApp */
 }

@@ -1,3 +1,9 @@
+@font-face {
+  font-family: 'Biome';
+  src: url('BiomeW01-Regular.woff2') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 /* Reset + basic */
 * {
   box-sizing: border-box;

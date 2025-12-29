@@ -262,3 +262,12 @@ footer {
 body {
   font-family: 'Biome', sans-serif;
 }
+h1, h2, h3 {
+  font-family: 'Biome', sans-serif;
+  font-weight: 600; /* slightly bolder for headings */
+}
+
+p, a, li {
+  font-family: 'Biome', sans-serif;
+  font-weight: 400; /* regular weight for body text */
+}

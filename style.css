@@ -3,7 +3,6 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Arial', sans-serif;
 }
 
 body {
@@ -106,11 +105,13 @@ body {
   position: relative; /* above overlay */
   z-index: 1;
   color: white;
+  font-family: 'Biome', sans-serif;
 }
 
 .hero h1,
 .hero p {
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* subtle shadow for readability */
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* subtle shadow */
+  font-weight: 600;
 }
 
 .hero .btn {

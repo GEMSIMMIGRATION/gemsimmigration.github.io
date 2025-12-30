@@ -357,4 +357,28 @@ footer {
   color: #333;
   min-height: 40px;
 }
+/* Chat bubble fade out (already has slide-in) */
+.whatsapp-bubble {
+  position: fixed;
+  bottom: 90px; /* above WhatsApp button */
+  right: 20px;
+  width: 260px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  font-family: 'Biome', sans-serif;
+  overflow: hidden;
+  z-index: 9998;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 0.5s ease; /* fade + slide */
+}
+
+/* Slide in + fade in */
+.whatsapp-bubble.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Slide down + fade out when hidden (just remove 'show' class in JS) */
 

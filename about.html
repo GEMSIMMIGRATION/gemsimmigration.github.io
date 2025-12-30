@@ -65,6 +65,26 @@
   </div>
 </div>
 
+<script>
+  const bubble = document.querySelector('.whatsapp-bubble');
+  const text = "Hey there 👋 Contact us on WhatsApp for quick assistance.";
+  const typingTarget = document.getElementById("typing-text");
+  let index = 0;
+
+  // Show bubble after 1 second
+  setTimeout(() => {
+    bubble.classList.add('show');
+    typeText();
+  }, 1000);
+
+  function typeText() {
+    if (index < text.length) {
+      typingTarget.textContent += text.charAt(index);
+      index++;
+      setTimeout(typeText, 40);
+    }
+  }
+</script>
 
 </body>
 </html>

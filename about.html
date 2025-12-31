@@ -26,7 +26,30 @@
 </ul>
 
 </nav>
-  
+ 
+<div class="visit-counter">
+  <p>
+    👀 <strong>Total Visits:</strong>
+    <span id="visit-count">—</span>
+  </p>
+</div>
+
+<script>
+  const counterEndpoint =
+    "https://api.counterapi.dev/v2/gemsimmigrations-team-2328/first-counter-2328/up";
+
+  fetch(counterEndpoint)
+    .then(res => res.json())
+    .then(data => {
+      // CounterAPI returns the updated value
+      document.getElementById("visit-count").textContent =
+        data.data.count;
+    })
+    .catch(err => {
+      console.error("Counter error:", err);
+      document.getElementById("visit-count").textContent = "—";
+    });
+</script>
 
   <!-- About Section -->
   <section class="content">

@@ -4,83 +4,105 @@
   <meta charset="UTF-8">
   <title>Contact – GEMS Immigration</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Main stylesheet -->
   <link rel="stylesheet" href="style.css">
+
+  <!-- Favicons -->
   <link rel="icon" type="image/png" href="favicon-32x32.png">
   <link rel="icon" href="favicon.ico">
 </head>
 <body>
-  
-<nav class="navbar">
-  <div class="logo">
-    <a href="./index.html" class="logo-link">
-      <img src="logo.png" alt="GEMS Immigration Logo">
-      <span class="logo-text">GEMS Immigration</span>
-    </a>
-  </div>
 
-  <ul>
-  <li><a href="./index.html">Home</a></li>
-  <li><a href="./about.html">About</a></li>
-  <li><a href="./contact.html">Contact</a></li>
-</ul>
+  <!-- ================= NAVBAR ================= -->
+  <nav class="navbar">
+    <div class="logo">
+      <a href="./index.html" class="logo-link">
+        <img src="logo.png" alt="GEMS Immigration Logo">
+        <span class="logo-text">GEMS Immigration</span>
+      </a>
+    </div>
 
+    <ul>
+      <li><a href="./index.html">Home</a></li>
+      <li><a href="./about.html">About</a></li>
+      <li><a href="./contact.html" class="active">Contact</a></li>
+    </ul>
+  </nav>
 
-
-
-  <!-- Contact Section -->
+  <!-- ================= CONTACT INTRO ================= -->
   <section class="content">
     <h2>Contact Us</h2>
-    <p>Start your immigration journey today. Reach out for professional guidance you can trust.</p>
+    <p>
+      Start your immigration journey today.  
+      Reach out for professional guidance you can trust.
+    </p>
+
     <div class="whatsapp-container">
       <p><strong>WhatsApp:</strong> +64 221 786 007</p>
-      <a href="https://wa.me/64221786007" class="btn whatsapp-btn">Message on WhatsApp</a>
+      <a
+        href="https://wa.me/64221786007"
+        class="whatsapp-btn"
+        target="_blank"
+      >
+        Message on WhatsApp
+      </a>
     </div>
   </section>
 
-<!-- New Socials Section -->
-<section class="content contact-socials">
-  <h2>Connect With Us</h2>
-  <p>Reach us on your preferred platform — we’re just a message away.</p>
+  <!-- ================= SOCIALS ================= -->
+  <section class="content contact-socials">
+    <h2>Connect With Us</h2>
+    <p>Reach us on your preferred platform — we’re just a message away.</p>
 
-  <div class="social-grid">
+    <div class="social-grid">
 
-    <a href="https://wa.me/64221786007" target="_blank" class="social-card whatsapp">
-      <span>WhatsApp</span>
-      <small>Chat instantly</small>
-    </a>
+      <a href="https://wa.me/64221786007" target="_blank" class="social-card whatsapp">
+        <span>WhatsApp</span>
+        <small>Chat instantly</small>
+      </a>
 
-    <a href="https://www.youtube.com/@gemsimmigration" target="_blank" class="social-card youtube">
-      <span>YouTube</span>
-      <small>Watch our videos</small>
-    </a>
+      <a href="https://www.youtube.com/@gemsimmigration" target="_blank" class="social-card youtube">
+        <span>YouTube</span>
+        <small>Watch our videos</small>
+      </a>
 
-    <a href="https://www.linkedin.com/" target="_blank" class="social-card linkedin">
-      <span>LinkedIn</span>
-      <small>Connect professionally</small>
-    </a>
-    
-    <a href="https://facebook.com/amir.merchant001/" target="_blank" class="social-card facebook">
-      <span>Facebook</span>
-      <small>View our page</small>
-    </a>
+      <a href="https://www.linkedin.com/" target="_blank" class="social-card linkedin">
+        <span>LinkedIn</span>
+        <small>Connect professionally</small>
+      </a>
 
-    <a href="https://www.instagram.com/gemsinternationalnz/" target="_blank" class="social-card instagram">
-      <span>Instagram</span>
-      <small>Follow Us</small>
-    </a>
-    
-  </div>
-</section>
+      <a href="https://facebook.com/amir.merchant001/" target="_blank" class="social-card facebook">
+        <span>Facebook</span>
+        <small>View our page</small>
+      </a>
 
-  <!-- Footer -->
+      <a href="https://www.instagram.com/gemsinternationalnz/" target="_blank" class="social-card instagram">
+        <span>Instagram</span>
+        <small>Follow us</small>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
   <footer>
     <p>© 2025 GEMS Immigration. All rights reserved.</p>
   </footer>
 
-  <!-- Floating WhatsApp button & bubble (optional) -->
-  <a href="https://wa.me/64221786007" class="whatsapp-float" aria-label="Chat on WhatsApp" target="_blank">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="#ffffff">
-      <path d="M12.04 2C6.52 2 2 6.48 2 12c0 2.1.55 4.15 1.6 5.96L2 22l4.14-1.56A9.96 9.96 0 0012.04 22C17.56 22 22 17.52 22 12S17.56 2 12.04 2zm0 18.2c-1.74 0-3.45-.46-4.95-1.33l-.35-.2-2.45.92.93-2.38-.23-.37A8.2 8.2 0 014.1 12c0-4.45 3.6-8.1 7.94-8.1 4.37 0 7.86 3.65 7.86 8.1 0 4.45-3.5 8.1-7.86 8.1zm4.55-6.07c-.25-.13-1.48-.73-1.71-.82-.23-.08-.4-.13-.57.13-.17.25-.65.82-.8.99-.15.17-.3.2-.55.08-.25-.13-1.05-.39-2-1.24-.74-.66-1.23-1.48-1.38-1.73-.14-.25-.02-.39.11-.52.11-.11.25-.3.37-.45.12-.15.17-.25.25-.42.08-.17.04-.32-.02-.45-.06-.13-.57-1.38-.78-1.89-.2-.48-.41-.42-.57-.43l-.48-.01c-.17 0-.45.06-.68.32-.23.25-.89.87-.89 2.12 0 1.25.91 2.46 1.04 2.63.13.17 1.79 2.75 4.34 3.86.61.26 1.08.42 1.45.54.61.19 1.17.16 1.61.1.49-.07 1.48-.6 1.69-1.18.21-.58.21-1.08.15-1.18-.06-.1-.23-.16-.48-.29z"/>
+  <!-- ================= FLOATING WHATSAPP ================= -->
+  <a
+    href="https://wa.me/64221786007"
+    class="whatsapp-float"
+    aria-label="Chat on WhatsApp"
+    target="_blank"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg"
+         viewBox="0 0 24 24"
+         width="28"
+         height="28"
+         fill="#ffffff">
+      <path d="M12.04 2C6.52 2 2 6.48 2 12c0 2.1.55 4.15 1.6 5.96L2 22l4.14-1.56A9.96 9.96 0 0012.04 22C17.56 22 22 17.52 22 12S17.56 2 12.04 2zm0 18.2c-1.74 0-3.45-.46-4.95-1.33l-.35-.2-2.45.92.93-2.38-.23-.37A8.2 8.2 0 014.1 12c0-4.45 3.6-8.1 7.94-8.1 4.37 0 7.86 3.65 7.86 8.1 0 4.45-3.5 8.1-7.86 8.1z"/>
     </svg>
   </a>
 

@@ -453,3 +453,91 @@ footer {
 .social-card.instagram {
   border-top: 4px solid #DD2A7B;
 }
+/* ===== Contact Page Fixes ===== */
+.content.contact-socials,
+.whatsapp-container {
+  max-width: 900px;
+  margin: 0 auto 50px;
+  text-align: center;
+}
+
+.whatsapp-container p {
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.whatsapp-container .whatsapp-btn {
+  display: inline-block;
+  margin: 0 auto;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  border: 2px solid #25d366;
+  color: #25d366;
+  background: transparent;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.whatsapp-container .whatsapp-btn:hover {
+  background: #25d366;
+  color: white;
+}
+
+/* Social Cards Grid */
+.contact-socials .social-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.contact-socials .social-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  border-radius: 12px;
+  padding: 25px 20px;
+  text-decoration: none;
+  color: #222;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-align: center;
+}
+
+.contact-socials .social-card span {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.contact-socials .social-card small {
+  margin-top: 6px;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.contact-socials .social-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* Social platform colors */
+.social-card.whatsapp { border-top: 4px solid #25d366; }
+.social-card.youtube { border-top: 4px solid #FF0000; }
+.social-card.linkedin { border-top: 4px solid #0077B5; }
+.social-card.facebook { border-top: 4px solid #1877F2; }
+.social-card.instagram { border-top: 4px solid #DD2A7B; }
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .contact-socials .social-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .whatsapp-container .whatsapp-btn {
+    width: 70%;
+  }
+}

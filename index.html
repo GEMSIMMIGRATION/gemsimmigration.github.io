@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -100,33 +101,6 @@
   </div>
 
 </section>
-
-<div id="visitor-counter">Loading...</div>
-<script>
-  // Your Counter API token
-  const API_TOKEN = "ut_VcsuXB7scANC64E65kNUeN3e4iRkrHLKiv7QTgci";
-  const COUNTER_URL = "https://api.counterapi.dev/v2/gemsimmigrations-team-2328/first-counter-2328/up";
-
-  const counterDiv = document.getElementById("counter");
-
-  // Increment counter for each visit
-  fetch(COUNTER_URL, {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${API_TOKEN}`,
-      "Content-Type": "application/json"
-    }
-  })
-  .then(response => response.json())
-  .then(data => {
-    // Display total visits
-    counterDiv.textContent = `Total Visits: ${data.value}`;
-  })
-  .catch(err => {
-    console.error("Counter API error:", err);
-    counterDiv.textContent = "Visit count unavailable";
-  });
-</script>
 
 
   <!-- Footer -->

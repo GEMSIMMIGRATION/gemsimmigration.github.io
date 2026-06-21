@@ -1,95 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Newsletter Signup | GEMS Immigration</title>
+  <meta charset="UTF-8">
+  <title>Newsletter | GEMS Immigration</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Icons -->
+  <meta name="description" content="Join the GEMS Immigration newsletter for immigration updates, study tips, and pathway announcements.">
   <link rel="icon" type="image/png" href="favicon-32x32.png">
   <link rel="icon" href="favicon.ico">
-
-  <!-- Main site CSS -->
   <link rel="stylesheet" href="style.css">
-
-  <!-- Biome Font -->
-  <style>
-    @font-face {
-      font-family: "Biome";
-      src: url("BiomeW01-Regular.woff2") format("woff2");
-      font-weight: normal;
-      font-style: normal;
-      font-display: swap;
-    }
-
-    body {
-      margin: 0;
-      font-family: "Biome", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #f6f7f9;
-      color: #222;
-    }
-
-    .newsletter-wrapper {
-      min-height: calc(100vh - 80px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-
-    .newsletter-card {
-      width: 100%;
-      max-width: 720px;
-      background: #fff;
-      border-radius: 14px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.12);
-      padding: 28px;
-    }
-
-    .newsletter-card h1 {
-      margin-top: 0;
-      text-align: center;
-      font-size: 2rem;
-    }
-
-    .newsletter-card p {
-      text-align: center;
-      opacity: 0.85;
-      margin-bottom: 20px;
-    }
-
-    iframe {
-      width: 100%;
-      height: 600px;
-      border: 0;
-      border-radius: 10px;
-    }
-  </style>
- 
   <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "GEMS Immigration",
-  "url": "https://gemsimmigration.github.io",
-  "logo": "https://gemsimmigration.github.io/logo.png"
-}
-</script>
-<meta property="og:site_name" content="GEMS Immigration">
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "GEMS Immigration",
-  "url": "https://gemsimmigration.github.io/"
-}
-</script>
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "GEMS Immigration",
+    "url": "https://gemsimmigration.github.io",
+    "logo": "https://gemsimmigration.github.io/logo.png"
+  }
+  </script>
+  <meta property="og:site_name" content="GEMS Immigration">
 </head>
-
 <body>
-
-  <!-- NAV -->
   <nav class="navbar">
     <div class="logo">
       <a href="./index.html" class="logo-link">
@@ -97,28 +27,35 @@
         <span class="logo-text">GEMS Immigration New Zealand</span>
       </a>
     </div>
-
     <ul>
       <li><a href="./index.html">Home</a></li>
       <li><a href="./about.html">About</a></li>
       <li><a href="./contact.html">Contact</a></li>
-      <li><a href="./newsletter.html">Newsletter</a></li>
+      <li><a href="./newsletter.html" class="active">Newsletter</a></li>
     </ul>
   </nav>
 
-  <!-- CONTENT -->
-  <div class="newsletter-wrapper">
-    <div class="newsletter-card">
-      <h1>Join Our Newsletter</h1>
-      <p>Get immigration updates, tips, and announcements directly to your inbox.</p>
+  <main class="newsletter-wrapper">
+    <section class="newsletter-card">
+      <p class="section-label">Stay informed</p>
+      <h1>Join the GEMS Immigration Newsletter</h1>
+      <p>Get practical immigration updates, study pathway tips, and announcements directly in your inbox.</p>
+      <iframe src="https://mailify.base44.app/Subscribe?hash=91nr7rwoqwf7w82enqzgn6" loading="lazy" referrerpolicy="no-referrer" title="GEMS Immigration newsletter signup"></iframe>
+    </section>
+  </main>
 
-      <iframe
-        src="https://mailify.base44.app/Subscribe?hash=91nr7rwoqwf7w82enqzgn6"
-        loading="lazy"
-        referrerpolicy="no-referrer"
-      ></iframe>
-    </div>
+  <footer>
+    <p>&copy; 2026 GEMS Immigration. All rights reserved.</p>
+  </footer>
+
+  <div class="whatsapp-wrapper" id="whatsappWrapper">
+    <button class="whatsapp-close" id="whatsappClose" aria-label="Close WhatsApp">x</button>
+    <a href="https://wa.me/64221786007" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12.04 2C6.52 2 2 6.48 2 12c0 2.1.55 4.15 1.6 5.96L2 22l4.14-1.56A9.96 9.96 0 0012.04 22C17.56 22 22 17.52 22 12S17.56 2 12.04 2zm0 18.2c-1.74 0-3.45-.46-4.95-1.33l-.35-.2-2.45.92.93-2.38-.23-.37A8.2 8.2 0 014.1 12c0-4.45 3.6-8.1 7.94-8.1 4.37 0 7.86 3.65 7.86 8.1 0 4.45-3.5 8.1-7.86 8.1z"/>
+      </svg>
+    </a>
   </div>
-
+  <script src="whatsapp.js"></script>
 </body>
 </html>

@@ -431,7 +431,7 @@ img {
 }
 
 .about-hero {
-  grid-template-columns: 1fr 720px;
+  grid-template-columns: 1fr 360px;
 }
 
 .credential-grid,
@@ -774,4 +774,8 @@ footer {
     display: none;
   }
 
+  .about-hero img {
+  max-width: 220px;
+  height: auto;
+  object-fit: contain;
 }

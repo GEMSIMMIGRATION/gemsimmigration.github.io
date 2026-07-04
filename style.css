@@ -431,7 +431,7 @@ img {
 }
 
 .about-hero {
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr 720px;
 }
 
 .credential-grid,

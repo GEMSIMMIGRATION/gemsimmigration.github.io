@@ -789,5 +789,8 @@ footer {
     object-fit: contain;
     border-radius: 0;
     box-shadow: none;
-  
+  }
+
+.about-photo img {
+    box-shadow: none;
 }

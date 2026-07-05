@@ -778,4 +778,16 @@ footer {
   max-width: 220px;
   height: auto;
   object-fit: contain;
+
+  }
+
+.about-photo img {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: unset;
+    object-fit: contain;
+    border-radius: 0;
+    box-shadow: none;
+  
 }

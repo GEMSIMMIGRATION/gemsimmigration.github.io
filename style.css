@@ -1228,3 +1228,45 @@ footer {
     width: 100%;
   }
 }
+
+
+/* =========================================================
+   GEMS UPDATES SYSTEM
+   ========================================================= */
+.updates-hero{position:relative;overflow:hidden;padding:92px 6%;background:linear-gradient(135deg,#061a38 0%,#0b3f78 55%,#1264a3 100%);color:#fff}
+.updates-hero:before,.updates-hero:after{content:"";position:absolute;border-radius:50%;pointer-events:none}
+.updates-hero:before{width:420px;height:420px;right:-120px;top:-190px;background:rgba(255,255,255,.08)}
+.updates-hero:after{width:260px;height:260px;left:-120px;bottom:-170px;background:rgba(224,171,70,.12)}
+.updates-hero-inner{position:relative;z-index:1;max-width:1180px;margin:auto;text-align:center}
+.updates-hero h1{font-size:clamp(3.2rem,7vw,6rem);margin:8px 0 14px;letter-spacing:-.05em}
+.updates-hero p:not(.section-label){max-width:700px;margin:auto;color:rgba(255,255,255,.84);font-size:1.08rem;line-height:1.7}
+.updates-content{max-width:1180px;margin:auto;padding:64px 6%}
+.updates-tools{display:flex;gap:14px;align-items:stretch;margin-bottom:20px}
+.updates-search{flex:1;display:flex;align-items:center;gap:12px;background:#fff;border:1px solid rgba(10,52,96,.13);border-radius:16px;padding:0 18px;box-shadow:0 12px 35px rgba(9,45,82,.08)}
+.updates-search span{font-size:1.6rem;color:#0b477d}
+.updates-search input{width:100%;border:0;outline:0;background:transparent;padding:17px 0;font:inherit;font-size:1rem}
+.updates-login-btn{white-space:nowrap}
+.account-status{margin:0 0 24px;padding:15px 18px;border-radius:14px;background:#eef6ff;border:1px solid #cfe3f8;color:#164c79}
+.admin-panel{margin:0 0 48px;padding:30px;border-radius:24px;background:linear-gradient(145deg,#071d3b,#0d3968);color:#fff;box-shadow:0 24px 60px rgba(4,27,57,.2)}
+.admin-panel-heading{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:25px}
+.admin-panel h2{margin:5px 0 0;font-size:2rem}
+.admin-panel .section-label{color:#f0bd54}
+.update-form{display:grid;gap:18px}
+.update-form label{display:grid;gap:8px;font-weight:700;font-size:.9rem}
+.update-form input,.update-form textarea,.update-form select{width:100%;box-sizing:border-box;border:1px solid rgba(255,255,255,.16);border-radius:12px;background:rgba(255,255,255,.09);color:#fff;padding:13px 14px;font:inherit;outline:none}
+.update-form select option{color:#111}
+.update-form input::placeholder,.update-form textarea::placeholder{color:rgba(255,255,255,.55)}
+.form-row{display:grid;grid-template-columns:2fr 1fr;gap:18px}
+.admin-form-actions{display:flex;gap:12px}
+.updates-heading{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:25px}
+.updates-heading h2{margin:5px 0 0;font-size:2.4rem}
+#updateCount{margin:0;color:#6a7890}
+.no-updates{text-align:center;padding:60px 20px;border:1px dashed #c9d5e2;border-radius:20px}
+@media(max-width:700px){
+ .updates-tools,.admin-panel-heading,.updates-heading{flex-direction:column;align-items:stretch}
+ .updates-login-btn{width:100%}
+ .form-row{grid-template-columns:1fr}
+ .admin-form-actions{flex-wrap:wrap}
+ .updates-hero{padding:70px 5%}
+ .updates-content{padding:45px 5%}
+}

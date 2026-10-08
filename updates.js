@@ -93,6 +93,80 @@ search?.addEventListener("input", () => {
   });
 });
 
+
+/* =========================
+   INZ SCANNER — SYS 13
+   ========================= */
+const scanInzBtn = $("scanInzBtn");
+const aiScanStatus = $("aiScanStatus");
+const aiScanStats = $("aiScanStats");
+const aiNewCount = $("aiNewCount");
+const aiDuplicateCount = $("aiDuplicateCount");
+const aiCheckedCount = $("aiCheckedCount");
+const aiResults = $("aiResults");
+
+function setAiScanStatus(message, type = "") {
+  if (!aiScanStatus) return;
+  aiScanStatus.hidden = !message;
+  aiScanStatus.className = "ai-scan-status " + type;
+  aiScanStatus.textContent = message;
+}
+
+function renderInzScan(results) {
+  if (!aiResults) return;
+  const items = results?.items || [];
+  const newItems = items.filter((item) => !item.duplicate);
+  const duplicateItems = items.filter((item) => item.duplicate);
+  if (aiScanStats) aiScanStats.hidden = false;
+  if (aiNewCount) aiNewCount.textContent = String(newItems.length);
+  if (aiDuplicateCount) aiDuplicateCount.textContent = String(duplicateItems.length);
+  if (aiCheckedCount) aiCheckedCount.textContent = String(items.length);
+
+  if (!items.length) {
+    aiResults.hidden = false;
+    aiResults.innerHTML = '<div class="ai-result-empty"><strong>No INZ news items were found.</strong><p>The official INZ news centre did not provide readable recent articles during this scan.</p></div>';
+    return;
+  }
+
+  aiResults.hidden = false;
+  aiResults.innerHTML = items.map((item) =>
+    '<article class="ai-result-card ' + (item.duplicate ? "is-duplicate" : "is-new") + '">' +
+      '<div class="ai-result-top"><span class="ai-result-badge">' +
+      (item.duplicate ? "DUPLICATE" : "NEW") + '</span>' +
+      (item.published_at ? '<span>' + formatDate(item.published_at) + '</span>' : '') +
+      '</div><h4>' + escapeHtml(item.title) + '</h4>' +
+      (item.summary ? '<p>' + escapeHtml(item.summary) + '</p>' : '') +
+      '<div class="ai-result-meta"><a href="' + escapeHtml(item.source_url) +
+      '" target="_blank" rel="noopener noreferrer">View official INZ source ↗</a>' +
+      (item.duplicate_reason ? '<span>' + escapeHtml(item.duplicate_reason) + '</span>' : '') +
+      '</div></article>'
+  ).join("");
+}
+
+async function runInzScan() {
+  if (!scanInzBtn) return;
+  scanInzBtn.disabled = true;
+  setAiScanStatus("Checking the official Immigration New Zealand news centre…");
+  if (aiResults) aiResults.hidden = true;
+  if (aiScanStats) aiScanStats.hidden = true;
+
+  try {
+    const { data, error } = await supabase.functions.invoke("groq-update-assistant", {
+      body: { action: "scan_inz" }
+    });
+    if (error) throw new Error(error.message || "The INZ scan failed.");
+    if (data?.error) throw new Error(data.error);
+    renderInzScan(data);
+    setAiScanStatus("Scan complete — checked " + (data.checked_count || 0) + " INZ articles.", "success");
+  } catch (error) {
+    console.error("INZ scanner failed:", error);
+    setAiScanStatus("The INZ scanner could not complete. " + (error.message || "Please try again."), "error");
+  } finally {
+    scanInzBtn.disabled = false;
+  }
+}
+scanInzBtn?.addEventListener("click", runInzScan);
+
 async function loadUpdates() {
   const { data, error } = await supabase
     .from("updates")

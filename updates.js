@@ -106,12 +106,28 @@ loginBtn?.addEventListener("click", async () => {
     return;
   }
 
-  const { error } = await supabase.auth.signInWithOAuth({
+  const redirectTo = window.location.href.split("#")[0].split("?")[0];
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
-    options: { redirectTo: window.location.origin + window.location.pathname }
+    options: {
+      redirectTo,
+      queryParams: {
+        access_type: "offline",
+        prompt: "select_account"
+      }
+    }
   });
 
-  if (error) showStatus("Google login could not start: " + error.message, "error");
+  if (error) {
+    console.error("Google login could not start:", error);
+    showStatus("Google login could not start: " + error.message, "error");
+    return;
+  }
+
+  if (!data?.url) {
+    showStatus("Google login could not start. No login URL was returned.", "error");
+  }
 });
 
 search?.addEventListener("input", () => {
@@ -777,7 +793,7 @@ function resizeAiInput() {
 }
 
 function extractAiUpdatePayload(reply) {
-  const match = String(reply || "").match(/<GEMS_UPDATE>\\s*([\\s\\S]*?)\\s*<\\/GEMS_UPDATE>/i);
+  const match = String(reply || "").match(/<GEMS_UPDATE>\s*([\s\S]*?)\s*<\/GEMS_UPDATE>/i);
   if (!match) return null;
 
   try {
@@ -842,7 +858,7 @@ function fillEditorFromAi(payload) {
 
 function cleanAiReply(reply) {
   return String(reply || "")
-    .replace(/\\s*<GEMS_UPDATE>[\\s\\S]*?<\\/GEMS_UPDATE>\\s*/gi, "")
+    .replace(/\s*<GEMS_UPDATE>[\s\S]*?<\/GEMS_UPDATE>\s*/gi, "")
     .trim();
 }
 
@@ -946,12 +962,16 @@ document.addEventListener("keydown", (event) => {
 
 aiLauncher?.setAttribute("aria-expanded", "false");
 
-supabase.auth.getSession().then(({ data: { session } }) => {
-  handleUser(session?.user || null);
-});
-
-supabase.auth.onAuthStateChange((_event, session) => {
-  handleUser(session?.user || null);
+/*
+  Initialise authentication from Supabase's INITIAL_SESSION event.
+  This avoids running the login/profile logic twice on page load.
+*/
+supabase.auth.onAuthStateChange((event, session) => {
+  if (event === "INITIAL_SESSION" || event === "SIGNED_IN" || event === "SIGNED_OUT") {
+    setTimeout(() => {
+      handleUser(session?.user || null);
+    }, 0);
+  }
 });
 
 loadUpdates();

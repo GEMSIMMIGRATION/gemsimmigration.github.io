@@ -402,3 +402,68 @@
     border-radius: 22px;
   }
 }
+
+
+/* =========================================================
+   FULL MARKDOWN RENDERING
+   ========================================================= */
+
+.gems-ai-bubble .gems-md-code,
+.update-reader-body .gems-md-code {
+  display: block;
+  margin: 15px 0;
+  padding: 15px 16px;
+  overflow-x: auto;
+  border: 1px solid rgba(80,120,160,.18);
+  border-radius: 14px;
+  background: #0b1522;
+  color: #dcecff;
+  font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+  font-size: 12px;
+  line-height: 1.65;
+  white-space: pre;
+}
+.gems-ai-bubble .gems-md-table-wrap,
+.update-reader-body .gems-md-table-wrap { width:100%; overflow-x:auto; margin:16px 0; border:1px solid rgba(100,130,160,.16); border-radius:14px; }
+.gems-ai-bubble .gems-md-table,
+.update-reader-body .gems-md-table { width:100%; min-width:420px; border-collapse:collapse; font-size:13px; }
+.gems-ai-bubble .gems-md-table th,
+.gems-ai-bubble .gems-md-table td,
+.update-reader-body .gems-md-table th,
+.update-reader-body .gems-md-table td { padding:10px 12px; border-bottom:1px solid rgba(100,130,160,.13); vertical-align:top; }
+.gems-ai-bubble .gems-md-table th,
+.update-reader-body .gems-md-table th { background:rgba(80,130,180,.08); font-weight:750; }
+.gems-ai-bubble .gems-md-table tr:last-child td,
+.update-reader-body .gems-md-table tr:last-child td { border-bottom:0; }
+.gems-ai-bubble .gems-md-blockquote,
+.update-reader-body .gems-md-blockquote { margin:15px 0; padding:10px 15px; border-left:4px solid #4f9bd7; border-radius:0 12px 12px 0; background:rgba(70,130,190,.07); }
+.gems-ai-bubble .gems-md-list,
+.update-reader-body .gems-md-list { margin:10px 0 15px; }
+.gems-ai-bubble .gems-md-list ul,
+.gems-ai-bubble .gems-md-list ol,
+.update-reader-body .gems-md-list ul,
+.update-reader-body .gems-md-list ol { margin:7px 0; padding-left:24px; }
+.gems-ai-bubble .gems-md-list li,
+.update-reader-body .gems-md-list li { margin:5px 0; padding-left:2px; }
+.gems-ai-bubble .gems-md-list .gems-md-task,
+.update-reader-body .gems-md-list .gems-md-task { list-style:none; margin-left:-22px; }
+.gems-md-checkbox { display:inline-grid; place-items:center; width:15px; height:15px; margin-right:7px; border:1px solid currentColor; border-radius:4px; font-size:10px; vertical-align:-2px; opacity:.75; }
+.gems-md-task.checked .gems-md-checkbox { background:rgba(60,180,115,.18); }
+.gems-ai-bubble hr,
+.update-reader-body hr { margin:20px 0; border:0; border-top:1px solid rgba(100,130,160,.18); }
+.gems-ai-bubble h1,.gems-ai-bubble h2,.gems-ai-bubble h3,.gems-ai-bubble h4,.gems-ai-bubble h5,.gems-ai-bubble h6,
+.update-reader-body h1,.update-reader-body h2,.update-reader-body h3,.update-reader-body h4,.update-reader-body h5,.update-reader-body h6 { margin:18px 0 8px; line-height:1.25; }
+.gems-ai-bubble h1,.update-reader-body h1 { font-size:1.55em; }
+.gems-ai-bubble h2,.update-reader-body h2 { font-size:1.4em; }
+.gems-ai-bubble h3,.update-reader-body h3 { font-size:1.25em; }
+.gems-ai-bubble h4,.update-reader-body h4 { font-size:1.12em; }
+.gems-ai-bubble h5,.update-reader-body h5 { font-size:1em; }
+.gems-ai-bubble h6,.update-reader-body h6 { font-size:.92em; opacity:.75; }
+.gems-ai-bubble p,.update-reader-body p { margin:0 0 12px; }
+.gems-ai-bubble p:last-child,.update-reader-body p:last-child { margin-bottom:0; }
+.gems-ai-bubble a,.update-reader-body a { color:#4d9fe0; font-weight:650; text-decoration:underline; text-decoration-color:rgba(77,159,224,.35); text-underline-offset:2px; }
+.gems-ai-bubble code:not(.gems-md-code code),
+.update-reader-body code:not(.gems-md-code code) { padding:2px 6px; border:1px solid rgba(100,130,160,.15); border-radius:6px; background:rgba(80,120,160,.09); font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace; font-size:.9em; }
+.gems-ai-bubble del,.update-reader-body del { opacity:.65; }
+.gems-ai-bubble strong,.update-reader-body strong { font-weight:800; }
+.gems-ai-bubble em,.update-reader-body em { font-style:italic; }

@@ -489,7 +489,7 @@ async function deleteUpdate(update) {
 
 function setEditorBusy(busy) {
   if (saveDraftBtn) saveDraftBtn.disabled = busy;
-  if (publishUpdateBtn) saveDraftBtn.disabled = busy;
+  if (publishUpdateBtn) publishUpdateBtn.disabled = busy;
   if (cancelEditBtn) cancelEditBtn.disabled = busy;
 
   if (publishUpdateBtn) {

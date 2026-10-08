@@ -7,6 +7,7 @@
   <meta name="description" content="Latest GEMS Immigration updates covering New Zealand and Australia immigration, education, visas, residency and practical guidance.">
   <meta name="robots" content="index, follow">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="ai-chat.css">
   <link rel="icon" href="favicon.ico">
   <meta property="og:site_name" content="GEMS Immigration">
 </head>
@@ -120,6 +121,32 @@
   </main>
 
   <footer><p>&copy; 2026 GEMS Immigration. All rights reserved.</p></footer>
+  <aside class="gems-ai-chat" id="gemsAiChat" aria-label="GEMS AI Assistant" hidden>
+    <div class="gems-ai-chat-header">
+      <div class="gems-ai-chat-brand">
+        <div class="gems-ai-avatar">✦</div>
+        <div>
+          <strong>GEMS AI</strong>
+          <span>Immigration Assistant</span>
+        </div>
+      </div>
+      <button class="gems-ai-close" id="gemsAiClose" type="button" aria-label="Close GEMS AI">×</button>
+    </div>
+    <div class="gems-ai-chat-notice"><span>✦</span><p>Ask about GEMS updates, immigration topics and official INZ information.</p></div>
+    <div class="gems-ai-messages" id="gemsAiMessages" aria-live="polite">
+      <div class="gems-ai-message ai"><div class="gems-ai-message-avatar">✦</div><div class="gems-ai-bubble">Hi! I'm GEMS AI. How can I help you today?</div></div>
+    </div>
+    <form class="gems-ai-input-area" id="gemsAiForm">
+      <textarea id="gemsAiInput" rows="1" maxlength="4000" placeholder="Ask GEMS AI..." aria-label="Message GEMS AI"></textarea>
+      <button id="gemsAiSend" type="submit" aria-label="Send message">↑</button>
+      <small>AI can make mistakes. Verify important immigration information with official INZ sources.</small>
+    </form>
+  </aside>
+
+  <button class="gems-ai-launcher" id="gemsAiLauncher" type="button" aria-label="Open GEMS AI Assistant">
+    <span class="gems-ai-launcher-icon">✦</span><span class="gems-ai-launcher-text">GEMS AI</span>
+  </button>
+
   <div class="whatsapp-wrapper" id="whatsappWrapper">
     <button class="whatsapp-close" id="whatsappClose" aria-label="Close WhatsApp">x</button>
     <a href="https://wa.me/64221786007" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">

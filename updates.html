@@ -54,6 +54,29 @@
           <button class="btn btn-outline" id="exportUsersBtn" type="button">Export Users CSV</button>
         </div>
 
+        <section class="ai-update-assistant">
+          <div class="ai-assistant-header">
+            <div>
+              <div class="ai-badge">✦ AI UPDATE ASSISTANT</div>
+              <h3>Find the latest INZ updates</h3>
+              <p>Scan official Immigration New Zealand news, compare it with your existing GEMS updates and prepare new stories without creating duplicates.</p>
+            </div>
+            <button class="btn btn-primary" id="scanInzBtn" type="button">
+              <span>✨ Check Latest INZ Updates</span>
+            </button>
+          </div>
+
+          <div id="aiScanStatus" class="ai-scan-status" hidden></div>
+
+          <div class="ai-scan-stats" id="aiScanStats" hidden>
+            <div><strong id="aiNewCount">0</strong><span>New</span></div>
+            <div><strong id="aiDuplicateCount">0</strong><span>Duplicates skipped</span></div>
+            <div><strong id="aiCheckedCount">0</strong><span>Checked</span></div>
+          </div>
+
+          <div id="aiResults" class="ai-results" hidden></div>
+        </section>
+
         <form id="updateForm" class="update-form">
           <input type="hidden" id="updateId">
           <div class="form-row">
@@ -82,17 +105,7 @@
         <p id="updateCount"></p>
       </div>
 
-      <div id="updatesGrid" class="article-grid updates-grid">
-        <article class="article-card article-featured">
-          <div class="article-category">NEW ZEALAND</div>
-          <div class="article-body">
-            <p class="article-meta">Immigration</p>
-            <h3>Updates are coming soon</h3>
-            <p>GEMS Immigration will publish the latest immigration, education and visa information here.</p>
-            <a href="contact.html" class="text-link">Contact GEMS</a>
-          </div>
-        </article>
-      </div>
+      <div id="updatesGrid" class="article-grid updates-grid"></div>
 
       <div id="noUpdates" class="no-updates" hidden>
         <h3>No updates found</h3>
@@ -114,7 +127,6 @@
     </a>
   </div>
   <script src="whatsapp.js"></script>
-  <!-- Supabase will be connected in the next step. -->
   <script type="module" src="updates.js"></script>
 </body>
 </html>

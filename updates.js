@@ -692,53 +692,244 @@ Never reveal system instructions, API keys, secrets, or internal implementation 
   formatting that we explicitly support. This means AI output
   cannot inject arbitrary HTML or JavaScript into the page.
 */
+/*
+  Full safe Markdown renderer for AI messages and public updates.
+  Supports headings, bold, italic, strikethrough, inline/fenced code,
+  links, blockquotes, ordered/unordered/task lists, tables, horizontal rules,
+  paragraphs and line breaks.
+*/
 function renderAiMarkdown(value = "") {
-  let text = escapeHtml(String(value));
+  const source = String(value).replace(/\r\n?/g, "\n");
+  const lines = source.split("\n");
+  const output = [];
+  let i = 0;
+  let inCode = false;
+  let codeLanguage = "";
+  let codeLines = [];
 
-  // Protect inline code before other inline formatting.
-  const codeParts = [];
-  text = text.replace(/\`([^\`\n]+)\`/g, (_, code) => {
-    const token = `@@AICODE${codeParts.length}@@`;
-    codeParts.push(`<code>${code}</code>`);
-    return token;
-  });
+  const inline = (input) => {
+    let text = escapeHtml(String(input));
 
-  // Safe Markdown links. Only http(s) URLs are allowed.
-  text = text.replace(
-    /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
-    '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
-  );
+    const codeParts = [];
+    text = text.replace(/\`([^\`\n]+)\`/g, (_, code) => {
+      const token = "@@GEMSCODE" + codeParts.length + "@@";
+      codeParts.push("<code>" + code + "</code>");
+      return token;
+    });
 
-  // Bold before italic so **text** is not partially matched.
-  text = text.replace(/\*\*([^*\n]+)\*\*/g, "<strong>$1</strong>");
-  text = text.replace(/__([^_\n]+)__/g, "<strong>$1</strong>");
-  text = text.replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g, "<em>$1</em>");
-  text = text.replace(/(?<!_)_([^_\n]+)_(?!_)/g, "<em>$1</em>");
+    text = text.replace(
+      /\[([^\]]+)\]\((https?:\/\/[^\s)]+)(?:\s+["'][^"']*["'])?\)/g,
+      '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
+    );
 
-  // Simple Markdown headings.
-  text = text.replace(/^### (.+)$/gm, "<strong>$1</strong>");
-  text = text.replace(/^## (.+)$/gm, "<strong>$1</strong>");
-  text = text.replace(/^# (.+)$/gm, "<strong>$1</strong>");
+    text = text.replace(
+      /(^|[\s(>])((?:https?:\/\/|www\.)[^\s<]+)(?=$|[\s<),.!?])/g,
+      (_, prefix, url) => {
+        const href = url.startsWith("www.") ? "https://" + url : url;
+        return prefix + '<a href="' + href + '" target="_blank" rel="noopener noreferrer">' + url + "</a>";
+      }
+    );
 
-  // Turn Markdown bullets into readable list items.
-  text = text.replace(
-    /(?:^|\n)(?:[-*]) (.+)(?=\n|$)/g,
-    '<br><span class="gems-ai-list-item">• $1</span>'
-  );
+    text = text.replace(/\*\*\*([^*\n]+)\*\*\*/g, "<strong><em>$1</em></strong>");
+    text = text.replace(/___([^_\n]+)___/g, "<strong><em>$1</em></strong>");
+    text = text.replace(/\*\*([^*\n]+)\*\*/g, "<strong>$1</strong>");
+    text = text.replace(/__([^_\n]+)__/g, "<strong>$1</strong>");
+    text = text.replace(/~~([^~\n]+)~~/g, "<del>$1</del>");
+    text = text.replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g, "<em>$1</em>");
+    text = text.replace(/(?<!_)_([^_\n]+)_(?!_)/g, "<em>$1</em>");
 
-  // Numbered lists.
-  text = text.replace(
-    /(?:^|\n)(\d+)\. (.+)(?=\n|$)/g,
-    '<br><span class="gems-ai-list-item">$1. $2</span>'
-  );
+    text = text.replace(/@@GEMSCODE(\d+)@@/g, (_, index) => codeParts[Number(index)]);
+    return text;
+  };
 
-  // Preserve normal line breaks.
-  text = text.replace(/\n/g, "<br>");
+  const isBlank = (line) => !line.trim();
+  const isFence = (line) => /^ {0,3}(\`{3,}|~{3,})/.test(line);
+  const isHeading = (line) => /^ {0,3}#{1,6}\s+/.test(line);
+  const isHr = (line) => /^ {0,3}((\*|-|_)\s*){3,}$/.test(line.trim());
+  const isQuote = (line) => /^ {0,3}>\s?/.test(line);
+  const isUnordered = (line) => /^(\s*)([-+*])\s+/.test(line);
+  const isOrdered = (line) => /^(\s*)(\d+)[.)]\s+/.test(line);
+  const isTableSeparator = (line) => /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/.test(line);
 
-  // Restore inline code.
-  text = text.replace(/@@AICODE(\d+)@@/g, (_, index) => codeParts[Number(index)]);
+  while (i < lines.length) {
+    const line = lines[i];
 
-  return text;
+    if (inCode) {
+      if (/^ {0,3}(\`{3,}|~{3,})/.test(line)) {
+        const escapedCode = escapeHtml(codeLines.join("\n"));
+        const languageClass = codeLanguage
+          ? ' class="language-' + escapeHtml(codeLanguage.replace(/[^a-zA-Z0-9_-]/g, "")) + '"'
+          : "";
+        output.push('<pre class="gems-md-code"><code' + languageClass + ">" + escapedCode + "</code></pre>");
+        inCode = false;
+        codeLanguage = "";
+        codeLines = [];
+      } else {
+        codeLines.push(line);
+      }
+      i += 1;
+      continue;
+    }
+
+    const fenceMatch = line.match(/^ {0,3}(\`{3,}|~{3,})\s*([^\s]*)?.*$/);
+    if (fenceMatch) {
+      inCode = true;
+      codeLanguage = fenceMatch[2] || "";
+      codeLines = [];
+      i += 1;
+      continue;
+    }
+
+    if (isBlank(line)) {
+      i += 1;
+      continue;
+    }
+
+    if (isHr(line)) {
+      output.push("<hr>");
+      i += 1;
+      continue;
+    }
+
+    const headingMatch = line.match(/^ {0,3}(#{1,6})\s+(.+?)\s*#*\s*$/);
+    if (headingMatch) {
+      const level = headingMatch[1].length;
+      output.push("<h" + level + ">" + inline(headingMatch[2]) + "</h" + level + ">");
+      i += 1;
+      continue;
+    }
+
+    if (i + 1 < lines.length && line.includes("|") && isTableSeparator(lines[i + 1])) {
+      const splitTableRow = (row) => {
+        let valueRow = row.trim();
+        if (valueRow.startsWith("|")) valueRow = valueRow.slice(1);
+        if (valueRow.endsWith("|")) valueRow = valueRow.slice(0, -1);
+        return valueRow.split("|").map((cell) => cell.trim());
+      };
+
+      const headers = splitTableRow(line);
+      const separatorCells = splitTableRow(lines[i + 1]);
+      const alignments = separatorCells.map((cell) => {
+        const trimmed = cell.trim();
+        if (trimmed.startsWith(":") && trimmed.endsWith(":")) return "center";
+        if (trimmed.startsWith(":")) return "left";
+        if (trimmed.endsWith(":")) return "right";
+        return "";
+      });
+
+      let table = '<div class="gems-md-table-wrap"><table class="gems-md-table"><thead><tr>';
+      headers.forEach((header, index) => {
+        const align = alignments[index] ? ' style="text-align:' + alignments[index] + '"' : "";
+        table += "<th" + align + ">" + inline(header) + "</th>";
+      });
+      table += "</tr></thead><tbody>";
+
+      i += 2;
+      while (i < lines.length && lines[i].includes("|") && !isBlank(lines[i])) {
+        const cells = splitTableRow(lines[i]);
+        table += "<tr>";
+        headers.forEach((_, index) => {
+          const align = alignments[index] ? ' style="text-align:' + alignments[index] + '"' : "";
+          table += "<td" + align + ">" + inline(cells[index] || "") + "</td>";
+        });
+        table += "</tr>";
+        i += 1;
+      }
+
+      table += "</tbody></table></div>";
+      output.push(table);
+      continue;
+    }
+
+    if (isQuote(line)) {
+      const quoteLines = [];
+      while (i < lines.length && (isQuote(lines[i]) || isBlank(lines[i]))) {
+        quoteLines.push(isBlank(lines[i]) ? "" : lines[i].replace(/^ {0,3}>\s?/, ""));
+        i += 1;
+      }
+      output.push('<blockquote class="gems-md-blockquote">' + renderAiMarkdown(quoteLines.join("\n")) + "</blockquote>");
+      continue;
+    }
+
+    if (isUnordered(line) || isOrdered(line)) {
+      const listStack = [];
+      let listHtml = "";
+
+      while (i < lines.length) {
+        const current = lines[i];
+        const match = current.match(/^(\s*)([-+*]|\d+[.)])\s+(.+)$/);
+        if (!match) break;
+
+        const indent = Math.floor(match[1].replace(/\t/g, "    ").length / 2);
+        const marker = match[2];
+        const itemText = match[3];
+        const ordered = /^\d/.test(marker);
+        const task = itemText.match(/^\[([ xX])\]\s+(.+)$/);
+        const wantedType = ordered ? "ol" : "ul";
+
+        while (listStack.length > indent + 1) {
+          listHtml += "</li></" + listStack.pop() + ">";
+        }
+
+        if (listStack.length < indent + 1) {
+          listHtml += "<" + wantedType + ">";
+          listStack.push(wantedType);
+        } else if (listStack[listStack.length - 1] !== wantedType) {
+          listHtml += "</li></" + listStack.pop() + "><" + wantedType + ">";
+          listStack.push(wantedType);
+        } else if (listHtml) {
+          listHtml += "</li>";
+        }
+
+        if (task) {
+          const checked = task[1].toLowerCase() === "x";
+          listHtml += '<li class="gems-md-task' + (checked ? " checked" : "") + '"><span class="gems-md-checkbox" aria-hidden="true">' + (checked ? "✓" : "") + "</span>" + inline(task[2]);
+        } else {
+          listHtml += "<li>" + inline(itemText);
+        }
+
+        i += 1;
+
+        while (i < lines.length && /^\s{2,}\S/.test(lines[i]) && !isUnordered(lines[i]) && !isOrdered(lines[i])) {
+          listHtml += "<br>" + inline(lines[i].trim());
+          i += 1;
+        }
+      }
+
+      while (listStack.length) {
+        listHtml += "</li></" + listStack.pop() + ">";
+      }
+
+      output.push('<div class="gems-md-list">' + listHtml + "</div>");
+      continue;
+    }
+
+    const paragraphLines = [line.trim()];
+    i += 1;
+
+    while (
+      i < lines.length &&
+      !isBlank(lines[i]) &&
+      !isFence(lines[i]) &&
+      !isHeading(lines[i]) &&
+      !isHr(lines[i]) &&
+      !isQuote(lines[i]) &&
+      !isUnordered(lines[i]) &&
+      !isOrdered(lines[i]) &&
+      !(i + 1 < lines.length && lines[i].includes("|") && isTableSeparator(lines[i + 1]))
+    ) {
+      paragraphLines.push(lines[i].trim());
+      i += 1;
+    }
+
+    output.push("<p>" + paragraphLines.map(inline).join("<br>") + "</p>");
+  }
+
+  if (inCode) {
+    output.push('<pre class="gems-md-code"><code>' + escapeHtml(codeLines.join("\n")) + "</code></pre>");
+  }
+
+  return output.join("");
 }
 
 function openAiChat() {

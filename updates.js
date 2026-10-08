@@ -270,7 +270,9 @@ async function sendAiMessage(message) {
   } catch (error) {
     typingMessage?.remove();
     console.error("GEMS AI error:", error);
-    addAiMessage("ai", "Sorry, I couldn't connect to GEMS AI right now. Please try again in a moment.");
+
+    const messageText = error?.message || String(error) || "Unknown AI error";
+    addAiMessage("ai", "GEMS AI error: " + messageText);
 
     const last = aiConversation[aiConversation.length - 1];
     if (last?.role === "user" && last.content === cleanMessage) aiConversation.pop();

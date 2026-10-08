@@ -4,3 +4,401 @@
 
 /* INZ SCANNER */
 .ai-scan-status{margin-top:18px;padding:12px 14px;border-radius:14px;background:#eef6ff;border:1px solid #d9e9f8;color:#315979;font-size:13px;line-height:1.45}.ai-scan-status.success{background:#edf9f2;border-color:#ccebd8;color:#23633e}.ai-scan-status.error{background:#fff1f1;border-color:#f0cccc;color:#9a3030}.ai-scan-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}.ai-scan-stats>div{padding:14px;border:1px solid rgba(26,91,145,.12);border-radius:16px;background:rgba(255,255,255,.7);text-align:center}.ai-scan-stats strong,.ai-scan-stats span{display:block}.ai-scan-stats strong{font-size:22px;color:#0b4d88}.ai-scan-stats span{margin-top:3px;font-size:10px;color:#6d7f91;text-transform:uppercase;letter-spacing:.08em}.ai-results{display:grid;gap:10px;margin-top:16px;max-height:520px;overflow:auto;padding-right:3px}.ai-result-card{padding:16px;border:1px solid #dce7f1;border-radius:18px;background:rgba(255,255,255,.78);box-shadow:0 7px 24px rgba(20,50,80,.05)}.ai-result-card.is-new{border-color:#cfe5d8}.ai-result-card.is-duplicate{opacity:.72}.ai-result-top{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:11px;color:#718397}.ai-result-badge{display:inline-flex;padding:5px 8px;border-radius:999px;font-size:9px;font-weight:800;letter-spacing:.08em;background:#e8f5ec;color:#277145}.is-duplicate .ai-result-badge{background:#edf0f3;color:#65717d}.ai-result-card h4{margin:10px 0 7px;color:#163b5c;font-size:15px;line-height:1.35}.ai-result-card p{margin:0;color:#52677a;font-size:12px;line-height:1.55}.ai-result-meta{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:12px;font-size:10px}.ai-result-meta a{color:#0b5da7;font-weight:700;text-decoration:none}.ai-result-meta a:hover{text-decoration:underline}.ai-result-meta span{color:#7b8997}.ai-result-empty{padding:20px;border:1px dashed #ccdbe8;border-radius:16px;background:#f8fbfe;color:#587086}.ai-result-empty strong{display:block;color:#234966;margin-bottom:5px}.ai-result-empty p{margin:0;font-size:12px;line-height:1.5}@media(max-width:600px){.ai-scan-stats{grid-template-columns:1fr}.ai-result-top{align-items:flex-start;flex-direction:column}}
+
+
+
+/* =========================================================
+   SYS 14 — UPDATE MANAGER
+   ========================================================= */
+
+.admin-panel-subtitle {
+  margin: 8px 0 0;
+  opacity: 0.72;
+}
+
+.admin-editor-card,
+.admin-update-manager {
+  margin-top: 28px;
+  padding: 28px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 24px;
+  background: rgba(255,255,255,0.035);
+  backdrop-filter: blur(18px);
+}
+
+.admin-editor-heading,
+.admin-manager-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.admin-editor-heading h3,
+.admin-manager-heading h3 {
+  margin: 4px 0 8px;
+}
+
+.admin-editor-heading p,
+.admin-manager-heading p {
+  margin: 0;
+  opacity: 0.7;
+}
+
+.admin-status-badge,
+.admin-update-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 7px 11px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.admin-status-badge.draft,
+.admin-update-status.draft {
+  background: rgba(255,255,255,0.08);
+  color: inherit;
+}
+
+.admin-status-badge.published,
+.admin-update-status.published {
+  background: rgba(47, 180, 115, 0.14);
+  color: #6ee7a7;
+}
+
+.field-hint {
+  display: block;
+  margin-top: 7px;
+  opacity: 0.55;
+  font-size: 12px;
+}
+
+.admin-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.admin-update-manager {
+  overflow: hidden;
+}
+
+.admin-manager-stats {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.admin-stat {
+  min-width: 92px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.055);
+  text-align: center;
+}
+
+.admin-stat strong {
+  display: block;
+  font-size: 22px;
+}
+
+.admin-stat span {
+  display: block;
+  margin-top: 3px;
+  font-size: 11px;
+  opacity: 0.6;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.admin-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.admin-filter-search {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 240px;
+  flex: 1;
+  padding: 0 14px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px;
+  background: rgba(0,0,0,0.12);
+}
+
+.admin-filter-search input {
+  width: 100%;
+  min-height: 44px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+}
+
+.admin-filter-buttons {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.admin-filter-btn,
+.admin-action-btn {
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.045);
+  color: inherit;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.admin-filter-btn {
+  padding: 9px 14px;
+}
+
+.admin-filter-btn:hover,
+.admin-filter-btn.active,
+.admin-action-btn:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.admin-updates-list {
+  display: grid;
+  gap: 10px;
+}
+
+.admin-update-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  padding: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px;
+  background: rgba(0,0,0,0.1);
+}
+
+.admin-update-item-main {
+  min-width: 0;
+  flex: 1;
+}
+
+.admin-update-item-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 7px;
+}
+
+.admin-update-category {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  opacity: 0.58;
+}
+
+.admin-update-item h4 {
+  margin: 0 0 7px;
+  font-size: 17px;
+}
+
+.admin-update-summary {
+  margin: 0;
+  opacity: 0.68;
+  line-height: 1.5;
+}
+
+.admin-update-meta {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  font-size: 11px;
+  opacity: 0.48;
+}
+
+.admin-update-actions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.admin-action-btn {
+  padding: 8px 12px;
+  font-size: 12px;
+}
+
+.admin-action-btn.delete {
+  border-color: rgba(255, 90, 90, 0.25);
+}
+
+.admin-updates-empty {
+  padding: 45px 20px;
+  text-align: center;
+  border: 1px dashed rgba(255,255,255,0.12);
+  border-radius: 18px;
+}
+
+.admin-empty-icon {
+  margin-bottom: 8px;
+  font-size: 24px;
+}
+
+.admin-updates-empty h4 {
+  margin: 0 0 6px;
+}
+
+.admin-updates-empty p {
+  margin: 0;
+  opacity: 0.6;
+}
+
+
+/* =========================================================
+   SYS 14 — PUBLIC UPDATE READER
+   ========================================================= */
+
+.update-reader-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.update-reader-modal[hidden] {
+  display: none;
+}
+
+.update-reader-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 9, 18, 0.78);
+  backdrop-filter: blur(9px);
+}
+
+.update-reader-dialog {
+  position: relative;
+  width: min(820px, 100%);
+  max-height: min(820px, 90vh);
+  overflow: auto;
+  padding: 38px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 28px;
+  background: rgba(18, 25, 39, 0.97);
+  box-shadow: 0 30px 90px rgba(0,0,0,0.45);
+}
+
+.update-reader-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.07);
+  color: inherit;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.update-reader-category {
+  display: inline-flex;
+  margin-bottom: 8px;
+  padding: 7px 11px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.07);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.update-reader-date {
+  margin: 0 0 14px;
+  font-size: 12px;
+  opacity: 0.5;
+}
+
+.update-reader-dialog h2 {
+  margin: 0 0 15px;
+  font-size: clamp(28px, 5vw, 44px);
+  line-height: 1.08;
+}
+
+.update-reader-summary {
+  margin: 0 0 25px;
+  font-size: 17px;
+  line-height: 1.65;
+  opacity: 0.72;
+}
+
+.update-reader-body {
+  line-height: 1.8;
+  font-size: 16px;
+}
+
+.update-reader-body strong {
+  font-weight: 750;
+}
+
+.update-reader-body em {
+  opacity: 0.9;
+}
+
+.update-reader-open {
+  overflow: hidden;
+}
+
+@media (max-width: 760px) {
+  .admin-editor-card,
+  .admin-update-manager {
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .admin-editor-heading,
+  .admin-manager-heading,
+  .admin-filter-bar,
+  .admin-update-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-manager-stats {
+    width: 100%;
+  }
+
+  .admin-stat {
+    flex: 1;
+  }
+
+  .admin-filter-search {
+    min-width: 0;
+  }
+
+  .admin-update-actions {
+    justify-content: flex-start;
+  }
+
+  .update-reader-dialog {
+    padding: 28px 21px;
+    border-radius: 22px;
+  }
+}

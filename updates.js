@@ -10,6 +10,31 @@ const grid = $("updatesGrid");
 const loginBtn = $("loginBtn");
 const status = $("accountStatus");
 const adminPanel = $("adminPanel");
+const updateForm = $("updateForm");
+const updateId = $("updateId");
+const updateTitle = $("updateTitle");
+const updateCategory = $("updateCategory");
+const updateSummary = $("updateSummary");
+const updateBody = $("updateBody");
+const saveDraftBtn = $("saveDraftBtn");
+const publishUpdateBtn = $("publishUpdateBtn");
+const cancelEditBtn = $("cancelEditBtn");
+const editorHeading = $("editorHeading");
+const editorDescription = $("editorDescription");
+const editorStatusBadge = $("editorStatusBadge");
+const summaryCount = $("summaryCount");
+const adminUpdatesList = $("adminUpdatesList");
+const adminUpdatesEmpty = $("adminUpdatesEmpty");
+const adminUpdateSearch = $("adminUpdateSearch");
+const adminTotalCount = $("adminTotalCount");
+const adminPublishedCount = $("adminPublishedCount");
+const adminDraftCount = $("adminDraftCount");
+const exportUsersBtn = $("exportUsersBtn");
+
+let isAdmin = false;
+let adminUpdates = [];
+let adminFilter = "all";
+
 
 function showStatus(message, type = "") {
   if (!status) return;
@@ -29,6 +54,8 @@ async function getAdminStatus() {
 
 async function handleUser(user) {
   if (!user) {
+    isAdmin = false;
+    adminUpdates = [];
     if (adminPanel) adminPanel.hidden = true;
     if (loginBtn) loginBtn.innerHTML = "<span>Continue with Google</span>";
     return;
@@ -59,6 +86,7 @@ async function handleUser(user) {
   if (isAdmin) {
     if (adminPanel) adminPanel.hidden = false;
     showStatus("Signed in as an administrator.");
+    await loadAdminUpdates();
   } else {
     if (adminPanel) adminPanel.hidden = true;
     showStatus("Signed in successfully. You have read-only access to Updates.");
@@ -105,29 +133,44 @@ async function loadUpdates() {
     return;
   }
 
-  if (!data?.length) {
+  renderPublicUpdates(data || []);
+}
+
+function renderPublicUpdates(data) {
+  if (!grid) return;
+
+  if (!data.length) {
+    grid.innerHTML = "";
     if ($("updateCount")) $("updateCount").textContent = "0 updates";
     if ($("noUpdates")) $("noUpdates").hidden = false;
     return;
   }
 
-  grid.innerHTML = data.map((update) => `
-    <article class="article-card">
-      <div class="article-category">${escapeHtml(update.category)}</div>
-      <div class="article-body">
-        <p class="article-meta">${formatDate(update.created_at)}</p>
-        <h3>${escapeHtml(update.title)}</h3>
-        <p>${escapeHtml(update.summary)}</p>
-        <button class="text-link update-read-btn" data-id="${update.id}" type="button">Read update</button>
-      </div>
-    </article>
-  `).join("");
+  grid.innerHTML = data.map((update) => (
+    '<article class="article-card">' +
+      '<div class="article-category">' + escapeHtml(update.category) + '</div>' +
+      '<div class="article-body">' +
+        '<p class="article-meta">' + formatDate(update.created_at) + '</p>' +
+        '<h3>' + escapeHtml(update.title) + '</h3>' +
+        '<p>' + escapeHtml(update.summary) + '</p>' +
+        '<button class="text-link update-read-btn" data-id="' + update.id + '" type="button">Read update</button>' +
+      '</div>' +
+    '</article>'
+  )).join("");
 
   if ($("updateCount")) {
-    $("updateCount").textContent = data.length + (data.length === 1 ? " update" : " updates");
+    $("updateCount").textContent =
+      data.length + (data.length === 1 ? " update" : " updates");
   }
+
   if ($("noUpdates")) $("noUpdates").hidden = true;
 }
+
+grid?.addEventListener("click", async (event) => {
+  const button = event.target.closest(".update-read-btn");
+  if (!button) return;
+  await openUpdate(button.dataset.id);
+});
 
 function formatDate(value) {
   return new Intl.DateTimeFormat("en-NZ", {
@@ -141,6 +184,440 @@ function escapeHtml(value = "") {
   return String(value).replace(/[&<>"']/g, (char) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
   }[char]));
+}
+
+/* =========================
+   SYS 14 — ADMIN UPDATE MANAGER
+   ========================= */
+
+async function loadAdminUpdates() {
+  if (!isAdmin) return;
+
+  const { data, error } = await supabase
+    .from("updates")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Admin updates load failed:", error);
+    showStatus("Could not load the admin update library.", "error");
+    return;
+  }
+
+  adminUpdates = data || [];
+  renderAdminUpdates();
+}
+
+function renderAdminUpdates() {
+  if (!adminUpdatesList) return;
+
+  const term = adminUpdateSearch?.value.trim().toLowerCase() || "";
+
+  const filtered = adminUpdates.filter((update) => {
+    const statusMatch =
+      adminFilter === "all" ||
+      (adminFilter === "published" && update.published) ||
+      (adminFilter === "draft" && !update.published);
+
+    const searchMatch =
+      !term ||
+      [update.title, update.summary, update.body, update.category]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase()
+        .includes(term);
+
+    return statusMatch && searchMatch;
+  });
+
+  const publishedCount = adminUpdates.filter((item) => item.published).length;
+
+  if (adminTotalCount) adminTotalCount.textContent = adminUpdates.length;
+  if (adminPublishedCount) adminPublishedCount.textContent = publishedCount;
+  if (adminDraftCount) adminDraftCount.textContent = adminUpdates.length - publishedCount;
+
+  adminUpdatesList.querySelectorAll(".admin-update-item").forEach((item) => item.remove());
+
+  if (!filtered.length) {
+    if (adminUpdatesEmpty) {
+      adminUpdatesEmpty.hidden = false;
+      adminUpdatesList.appendChild(adminUpdatesEmpty);
+    }
+    return;
+  }
+
+  if (adminUpdatesEmpty) adminUpdatesEmpty.hidden = true;
+
+  filtered.forEach((update) => {
+    const item = document.createElement("article");
+    item.className = "admin-update-item";
+
+    const main = document.createElement("div");
+    main.className = "admin-update-item-main";
+
+    const top = document.createElement("div");
+    top.className = "admin-update-item-top";
+
+    const category = document.createElement("span");
+    category.className = "admin-update-category";
+    category.textContent = update.category || "GEMS News";
+
+    const badge = document.createElement("span");
+    badge.className = "admin-update-status " + (update.published ? "published" : "draft");
+    badge.textContent = update.published ? "Published" : "Draft";
+
+    top.append(category, badge);
+
+    const title = document.createElement("h4");
+    title.textContent = update.title || "";
+
+    const summary = document.createElement("p");
+    summary.className = "admin-update-summary";
+    summary.textContent = update.summary || "";
+
+    const meta = document.createElement("div");
+    meta.className = "admin-update-meta";
+
+    const created = document.createElement("span");
+    created.textContent = "Created " + formatDateTime(update.created_at);
+
+    const updated = document.createElement("span");
+    updated.textContent = "Updated " + formatDateTime(update.updated_at || update.created_at);
+
+    meta.append(created, updated);
+    main.append(top, title, summary, meta);
+
+    const actions = document.createElement("div");
+    actions.className = "admin-update-actions";
+
+    actions.append(
+      makeAdminButton("Edit", "edit", update.id, "edit"),
+      makeAdminButton(update.published ? "Unpublish" : "Publish", "toggle", update.id, "toggle"),
+      makeAdminButton("Delete", "delete", update.id, "delete")
+    );
+
+    item.append(main, actions);
+    adminUpdatesList.appendChild(item);
+  });
+}
+
+function makeAdminButton(label, action, id, className) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "admin-action-btn " + className;
+  button.dataset.adminAction = action;
+  button.dataset.id = id;
+  button.textContent = label;
+  return button;
+}
+
+adminUpdatesList?.addEventListener("click", async (event) => {
+  const button = event.target.closest("[data-admin-action]");
+  if (!button || !isAdmin) return;
+
+  const update = adminUpdates.find((item) => item.id === button.dataset.id);
+  if (!update) return;
+
+  if (button.dataset.adminAction === "edit") startEditing(update);
+  if (button.dataset.adminAction === "toggle") await togglePublished(update);
+  if (button.dataset.adminAction === "delete") await deleteUpdate(update);
+});
+
+document.querySelectorAll(".admin-filter-btn").forEach((button) => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".admin-filter-btn").forEach((item) => item.classList.remove("active"));
+    button.classList.add("active");
+    adminFilter = button.dataset.filter || "all";
+    renderAdminUpdates();
+  });
+});
+
+adminUpdateSearch?.addEventListener("input", renderAdminUpdates);
+
+function startEditing(update) {
+  if (!updateForm) return;
+
+  updateId.value = update.id;
+  updateTitle.value = update.title || "";
+  updateCategory.value = update.category || "GEMS News";
+  updateSummary.value = update.summary || "";
+  updateBody.value = update.body || "";
+
+  updateSummary.dispatchEvent(new Event("input"));
+
+  if (editorHeading) editorHeading.textContent = "Edit Update";
+  if (editorDescription) editorDescription.textContent = "Update the content below, then save your changes.";
+
+  if (editorStatusBadge) {
+    editorStatusBadge.textContent = update.published ? "PUBLISHED" : "DRAFT";
+    editorStatusBadge.className = "admin-status-badge " + (update.published ? "published" : "draft");
+  }
+
+  if (publishUpdateBtn) publishUpdateBtn.textContent = update.published ? "Save Changes" : "Publish Update";
+  if (saveDraftBtn) saveDraftBtn.hidden = update.published;
+  if (cancelEditBtn) cancelEditBtn.hidden = false;
+
+  updateForm.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function resetEditor() {
+  updateForm?.reset();
+  if (updateId) updateId.value = "";
+
+  if (editorHeading) editorHeading.textContent = "Create New Update";
+  if (editorDescription) editorDescription.textContent = "Write an update and choose whether to save it as a draft or publish it immediately.";
+
+  if (editorStatusBadge) {
+    editorStatusBadge.textContent = "NEW";
+    editorStatusBadge.className = "admin-status-badge draft";
+  }
+
+  if (publishUpdateBtn) publishUpdateBtn.textContent = "Publish Update";
+  if (saveDraftBtn) saveDraftBtn.hidden = false;
+  if (cancelEditBtn) cancelEditBtn.hidden = true;
+  if (summaryCount) summaryCount.textContent = "0";
+}
+
+cancelEditBtn?.addEventListener("click", resetEditor);
+
+updateSummary?.addEventListener("input", () => {
+  if (summaryCount) summaryCount.textContent = updateSummary.value.length;
+});
+
+async function saveUpdate(published) {
+  if (!isAdmin) {
+    showStatus("Administrator access is required.", "error");
+    return;
+  }
+
+  const title = updateTitle?.value.trim() || "";
+  const category = updateCategory?.value || "GEMS News";
+  const summary = updateSummary?.value.trim() || "";
+  const body = updateBody?.value.trim() || "";
+  const id = updateId?.value || "";
+
+  if (!title || !summary || !body) {
+    showStatus("Please complete the title, summary and full update.", "error");
+    return;
+  }
+
+  const payload = {
+    title,
+    category,
+    summary,
+    body,
+    published,
+    updated_at: new Date().toISOString()
+  };
+
+  setEditorBusy(true);
+
+  try {
+    if (id) {
+      const { error } = await supabase.from("updates").update(payload).eq("id", id);
+      if (error) throw error;
+    } else {
+      const { error } = await supabase.from("updates").insert(payload);
+      if (error) throw error;
+    }
+
+    showStatus(published ? "Update published successfully." : "Draft saved successfully.");
+    resetEditor();
+    await loadAdminUpdates();
+    await loadUpdates();
+  } catch (error) {
+    console.error("Update save failed:", error);
+    showStatus("Could not save the update: " + (error?.message || "Unknown error"), "error");
+  } finally {
+    setEditorBusy(false);
+  }
+}
+
+updateForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  await saveUpdate(true);
+});
+
+saveDraftBtn?.addEventListener("click", async () => {
+  await saveUpdate(false);
+});
+
+async function togglePublished(update) {
+  const nextPublished = !update.published;
+  const message = nextPublished
+    ? "Publish this update?"
+    : "Unpublish this update and return it to drafts?";
+
+  if (!window.confirm(message)) return;
+
+  const { error } = await supabase
+    .from("updates")
+    .update({
+      published: nextPublished,
+      updated_at: new Date().toISOString()
+    })
+    .eq("id", update.id);
+
+  if (error) {
+    console.error("Publish toggle failed:", error);
+    showStatus("Could not change the update status: " + error.message, "error");
+    return;
+  }
+
+  showStatus(nextPublished ? "Update published." : "Update moved back to drafts.");
+  await loadAdminUpdates();
+  await loadUpdates();
+}
+
+async function deleteUpdate(update) {
+  if (!window.confirm("Delete “" + update.title + "”? This cannot be undone.")) return;
+
+  const { error } = await supabase.from("updates").delete().eq("id", update.id);
+
+  if (error) {
+    console.error("Update delete failed:", error);
+    showStatus("Could not delete the update: " + error.message, "error");
+    return;
+  }
+
+  if (updateId?.value === update.id) resetEditor();
+
+  showStatus("Update deleted.");
+  await loadAdminUpdates();
+  await loadUpdates();
+}
+
+function setEditorBusy(busy) {
+  if (saveDraftBtn) saveDraftBtn.disabled = busy;
+  if (publishUpdateBtn) saveDraftBtn.disabled = busy;
+  if (cancelEditBtn) cancelEditBtn.disabled = busy;
+
+  if (publishUpdateBtn) {
+    publishUpdateBtn.textContent = busy ? "Saving..." : (updateId?.value ? "Save Changes" : "Publish Update");
+  }
+}
+
+
+/* =========================
+   USER CSV EXPORT
+   ========================= */
+
+exportUsersBtn?.addEventListener("click", async () => {
+  if (!isAdmin) return;
+
+  exportUsersBtn.disabled = true;
+  exportUsersBtn.textContent = "Preparing...";
+
+  try {
+    const { data, error } = await supabase
+      .from("login_users")
+      .select("email, full_name, first_login_at, last_login_at, is_admin")
+      .order("first_login_at", { ascending: true });
+
+    if (error) throw error;
+
+    const rows = [
+      ["Email", "Full Name", "First Login", "Last Login", "Admin"],
+      ...(data || []).map((user) => [
+        user.email,
+        user.full_name || "",
+        user.first_login_at || "",
+        user.last_login_at || "",
+        user.is_admin ? "Yes" : "No"
+      ])
+    ];
+
+    const csv = rows.map((row) =>
+      row.map((value) => '"' + String(value ?? "").replace(/"/g, '""') + '"').join(",")
+    ).join("\r\n");
+
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "gems-login-users-" + new Date().toISOString().slice(0, 10) + ".csv";
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+
+    showStatus("Users CSV exported successfully.");
+  } catch (error) {
+    console.error("CSV export failed:", error);
+    showStatus("Could not export users: " + (error?.message || "Unknown error"), "error");
+  } finally {
+    exportUsersBtn.disabled = false;
+    exportUsersBtn.textContent = "Export Users CSV";
+  }
+});
+
+
+/* =========================
+   PUBLIC UPDATE VIEWER
+   ========================= */
+
+async function openUpdate(id) {
+  const { data, error } = await supabase
+    .from("updates")
+    .select("*")
+    .eq("id", id)
+    .eq("published", true)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Update viewer failed:", error);
+    showStatus("Could not open this update.", "error");
+    return;
+  }
+
+  if (!data) return;
+  showUpdateModal(data);
+}
+
+function showUpdateModal(update) {
+  let modal = $("updateReaderModal");
+
+  if (!modal) {
+    modal = document.createElement("div");
+    modal.id = "updateReaderModal";
+    modal.className = "update-reader-modal";
+    modal.hidden = true;
+
+    modal.innerHTML =
+      '<div class="update-reader-backdrop" data-close-update></div>' +
+      '<article class="update-reader-dialog" role="dialog" aria-modal="true" aria-labelledby="updateReaderTitle">' +
+        '<button class="update-reader-close" type="button" aria-label="Close update" data-close-update>×</button>' +
+        '<div class="update-reader-category" id="updateReaderCategory"></div>' +
+        '<p class="update-reader-date" id="updateReaderDate"></p>' +
+        '<h2 id="updateReaderTitle"></h2>' +
+        '<p class="update-reader-summary" id="updateReaderSummary"></p>' +
+        '<div class="update-reader-body" id="updateReaderBody"></div>' +
+      '</article>';
+
+    document.body.appendChild(modal);
+
+    modal.addEventListener("click", (event) => {
+      if (event.target.closest("[data-close-update]")) closeUpdateModal();
+    });
+  }
+
+  $("updateReaderCategory").textContent = update.category || "GEMS News";
+  $("updateReaderDate").textContent = formatDateTime(update.created_at);
+  $("updateReaderTitle").textContent = update.title || "";
+  $("updateReaderSummary").textContent = update.summary || "";
+  $("updateReaderBody").innerHTML = renderAiMarkdown(update.body || "");
+
+  modal.hidden = false;
+  document.body.classList.add("update-reader-open");
+}
+
+function closeUpdateModal() {
+  const modal = $("updateReaderModal");
+  if (!modal) return;
+  modal.hidden = true;
+  document.body.classList.remove("update-reader-open");
 }
 
 /* =========================
@@ -360,7 +837,10 @@ aiInput?.addEventListener("keydown", (event) => {
 });
 
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && aiChat && !aiChat.hidden) closeAiChat();
+  if (event.key === "Escape") {
+    closeUpdateModal();
+    if (aiChat && !aiChat.hidden) closeAiChat();
+  }
 });
 
 aiLauncher?.setAttribute("aria-expanded", "false");

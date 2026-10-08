@@ -39,9 +39,7 @@
           <span aria-hidden="true">⌕</span>
           <input id="updateSearch" type="search" placeholder="Search updates..." aria-label="Search updates">
         </div>
-        <button class="btn btn-primary updates-login-btn" id="loginBtn" type="button">
-          <span>Continue with Google</span>
-        </button>
+        <button class="btn btn-primary updates-login-btn" id="loginBtn" type="button"><span>Continue with Google</span></button>
       </div>
 
       <div id="accountStatus" class="account-status" hidden></div>
@@ -51,28 +49,95 @@
           <div>
             <p class="section-label">ADMIN</p>
             <h2>Manage Updates</h2>
+            <p class="admin-panel-subtitle">Create, edit and manage GEMS Immigration updates.</p>
           </div>
           <button class="btn btn-outline" id="exportUsersBtn" type="button">Export Users CSV</button>
         </div>
 
-        <form id="updateForm" class="update-form">
-          <input type="hidden" id="updateId">
-          <div class="form-row">
-            <label>Title<input id="updateTitle" required maxlength="160" placeholder="Update title"></label>
-            <label>Category
-              <select id="updateCategory">
-                <option>New Zealand</option><option>Australia</option><option>Education</option>
-                <option>Visa Update</option><option>Residency</option><option>GEMS News</option>
-              </select>
+        <section class="admin-editor-card">
+          <div class="admin-editor-heading">
+            <div>
+              <p class="section-label">CONTENT EDITOR</p>
+              <h3 id="editorHeading">Create New Update</h3>
+              <p id="editorDescription">Write an update and choose whether to save it as a draft or publish it immediately.</p>
+            </div>
+            <span id="editorStatusBadge" class="admin-status-badge draft">NEW</span>
+          </div>
+
+          <form id="updateForm" class="update-form">
+            <input type="hidden" id="updateId">
+
+            <div class="form-row">
+              <label>Title
+                <input id="updateTitle" type="text" required maxlength="160" placeholder="e.g. Important Visa Update for New Zealand">
+              </label>
+
+              <label>Category
+                <select id="updateCategory">
+                  <option value="New Zealand">New Zealand</option>
+                  <option value="Australia">Australia</option>
+                  <option value="Education">Education</option>
+                  <option value="Visa Update">Visa Update</option>
+                  <option value="Residency">Residency</option>
+                  <option value="GEMS News">GEMS News</option>
+                </select>
+              </label>
+            </div>
+
+            <label>Short description
+              <textarea id="updateSummary" required maxlength="300" rows="3" placeholder="A short summary that will appear on the update card..."></textarea>
+              <small class="field-hint"><span id="summaryCount">0</span>/300 characters</small>
             </label>
+
+            <label>Full update
+              <textarea id="updateBody" required rows="10" placeholder="Write the full update here..."></textarea>
+              <small class="field-hint">Detailed update content for readers.</small>
+            </label>
+
+            <div class="admin-form-actions">
+              <button class="btn btn-primary" id="saveDraftBtn" type="button">Save Draft</button>
+              <button class="btn btn-primary" id="publishUpdateBtn" type="submit">Publish Update</button>
+              <button class="btn btn-outline" id="cancelEditBtn" type="button" hidden>Cancel Edit</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="admin-update-manager">
+          <div class="admin-manager-heading">
+            <div>
+              <p class="section-label">UPDATE LIBRARY</p>
+              <h3>Your Updates</h3>
+              <p>Manage drafts and published updates from one place.</p>
+            </div>
+
+            <div class="admin-manager-stats">
+              <div class="admin-stat"><strong id="adminTotalCount">0</strong><span>Total</span></div>
+              <div class="admin-stat"><strong id="adminPublishedCount">0</strong><span>Published</span></div>
+              <div class="admin-stat"><strong id="adminDraftCount">0</strong><span>Drafts</span></div>
+            </div>
           </div>
-          <label>Short description<textarea id="updateSummary" required maxlength="300" rows="3" placeholder="Short summary shown on the update card"></textarea></label>
-          <label>Full update<textarea id="updateBody" required rows="8" placeholder="Write the full update here..."></textarea></label>
-          <div class="admin-form-actions">
-            <button class="btn btn-primary" type="submit">Publish Update</button>
-            <button class="btn btn-outline" id="cancelEditBtn" type="button" hidden>Cancel Edit</button>
+
+          <div class="admin-filter-bar">
+            <div class="admin-filter-search">
+              <span aria-hidden="true">⌕</span>
+              <input id="adminUpdateSearch" type="search" placeholder="Search your updates..." aria-label="Search your updates">
+            </div>
+
+            <div class="admin-filter-buttons">
+              <button class="admin-filter-btn active" data-filter="all" type="button">All</button>
+              <button class="admin-filter-btn" data-filter="published" type="button">Published</button>
+              <button class="admin-filter-btn" data-filter="draft" type="button">Drafts</button>
+            </div>
           </div>
-        </form>
+
+          <div id="adminUpdatesList" class="admin-updates-list">
+            <div id="adminUpdatesEmpty" class="admin-updates-empty" hidden>
+              <div class="admin-empty-icon">✦</div>
+              <h4>No updates yet</h4>
+              <p>Create your first GEMS Immigration update using the editor above.</p>
+            </div>
+          </div>
+        </section>
 
         <section class="gems-ai-admin-chat">
           <div class="gems-ai-admin-chat-heading">
@@ -87,17 +152,20 @@
             <div class="gems-ai-chat-header">
               <div class="gems-ai-chat-brand">
                 <div class="gems-ai-avatar">✦</div>
-                <div>
-                  <strong>GEMS AI</strong>
-                  <span>Immigration Assistant</span>
-                </div>
+                <div><strong>GEMS AI</strong><span>Immigration Assistant</span></div>
               </div>
               <button class="gems-ai-close" id="gemsAiClose" type="button" aria-label="Close GEMS AI">×</button>
             </div>
+
             <div class="gems-ai-chat-notice"><span>✦</span><p>Ask about GEMS updates, immigration topics and official INZ information.</p></div>
+
             <div class="gems-ai-messages" id="gemsAiMessages" aria-live="polite">
-              <div class="gems-ai-message ai"><div class="gems-ai-message-avatar">✦</div><div class="gems-ai-bubble">Hi! I'm GEMS AI. How can I help you today?</div></div>
+              <div class="gems-ai-message ai">
+                <div class="gems-ai-message-avatar">✦</div>
+                <div class="gems-ai-bubble">Hi! I'm GEMS AI. How can I help you today?</div>
+              </div>
             </div>
+
             <form class="gems-ai-input-area" id="gemsAiForm">
               <textarea id="gemsAiInput" rows="1" maxlength="4000" placeholder="Ask GEMS AI..." aria-label="Message GEMS AI"></textarea>
               <button id="gemsAiSend" type="submit" aria-label="Send message">↑</button>
@@ -106,7 +174,8 @@
           </aside>
 
           <button class="gems-ai-launcher" id="gemsAiLauncher" type="button" aria-label="Open GEMS AI Assistant">
-            <span class="gems-ai-launcher-icon">✦</span><span class="gems-ai-launcher-text">Open GEMS AI</span>
+            <span class="gems-ai-launcher-icon">✦</span>
+            <span class="gems-ai-launcher-text">Open GEMS AI</span>
           </button>
         </section>
       </section>
@@ -128,7 +197,11 @@
     </section>
 
     <section class="newsletter-cta">
-      <div><p class="section-label">STAY INFORMED</p><h2>Keep up with GEMS.</h2><p>Join the newsletter for immigration updates, education tips and useful pathway information.</p></div>
+      <div>
+        <p class="section-label">STAY INFORMED</p>
+        <h2>Keep up with GEMS.</h2>
+        <p>Join the newsletter for immigration updates, education tips and useful pathway information.</p>
+      </div>
       <a href="newsletter.html" class="btn btn-primary">Join Newsletter</a>
     </section>
   </main>

@@ -96,6 +96,42 @@
             <button class="btn btn-outline" id="cancelEditBtn" type="button" hidden>Cancel Edit</button>
           </div>
         </form>
+
+        <section class="gems-ai-admin-chat">
+          <div class="gems-ai-admin-chat-heading">
+            <div>
+              <div class="ai-badge">✦ GEMS AI</div>
+              <h3>AI Immigration Assistant</h3>
+              <p>Use GEMS AI privately from the admin area to research, draft and refine update content.</p>
+            </div>
+          </div>
+
+          <aside class="gems-ai-chat" id="gemsAiChat" aria-label="GEMS AI Assistant" hidden>
+            <div class="gems-ai-chat-header">
+              <div class="gems-ai-chat-brand">
+                <div class="gems-ai-avatar">✦</div>
+                <div>
+                  <strong>GEMS AI</strong>
+                  <span>Immigration Assistant</span>
+                </div>
+              </div>
+              <button class="gems-ai-close" id="gemsAiClose" type="button" aria-label="Close GEMS AI">×</button>
+            </div>
+            <div class="gems-ai-chat-notice"><span>✦</span><p>Ask about GEMS updates, immigration topics and official INZ information.</p></div>
+            <div class="gems-ai-messages" id="gemsAiMessages" aria-live="polite">
+              <div class="gems-ai-message ai"><div class="gems-ai-message-avatar">✦</div><div class="gems-ai-bubble">Hi! I'm GEMS AI. How can I help you today?</div></div>
+            </div>
+            <form class="gems-ai-input-area" id="gemsAiForm">
+              <textarea id="gemsAiInput" rows="1" maxlength="4000" placeholder="Ask GEMS AI..." aria-label="Message GEMS AI"></textarea>
+              <button id="gemsAiSend" type="submit" aria-label="Send message">↑</button>
+              <small>AI can make mistakes. Verify important immigration information with official INZ sources.</small>
+            </form>
+          </aside>
+
+          <button class="gems-ai-launcher" id="gemsAiLauncher" type="button" aria-label="Open GEMS AI Assistant">
+            <span class="gems-ai-launcher-icon">✦</span><span class="gems-ai-launcher-text">Open GEMS AI</span>
+          </button>
+        </section>
       </section>
 
       <div class="updates-heading">
@@ -121,31 +157,6 @@
   </main>
 
   <footer><p>&copy; 2026 GEMS Immigration. All rights reserved.</p></footer>
-  <aside class="gems-ai-chat" id="gemsAiChat" aria-label="GEMS AI Assistant" hidden>
-    <div class="gems-ai-chat-header">
-      <div class="gems-ai-chat-brand">
-        <div class="gems-ai-avatar">✦</div>
-        <div>
-          <strong>GEMS AI</strong>
-          <span>Immigration Assistant</span>
-        </div>
-      </div>
-      <button class="gems-ai-close" id="gemsAiClose" type="button" aria-label="Close GEMS AI">×</button>
-    </div>
-    <div class="gems-ai-chat-notice"><span>✦</span><p>Ask about GEMS updates, immigration topics and official INZ information.</p></div>
-    <div class="gems-ai-messages" id="gemsAiMessages" aria-live="polite">
-      <div class="gems-ai-message ai"><div class="gems-ai-message-avatar">✦</div><div class="gems-ai-bubble">Hi! I'm GEMS AI. How can I help you today?</div></div>
-    </div>
-    <form class="gems-ai-input-area" id="gemsAiForm">
-      <textarea id="gemsAiInput" rows="1" maxlength="4000" placeholder="Ask GEMS AI..." aria-label="Message GEMS AI"></textarea>
-      <button id="gemsAiSend" type="submit" aria-label="Send message">↑</button>
-      <small>AI can make mistakes. Verify important immigration information with official INZ sources.</small>
-    </form>
-  </aside>
-
-  <button class="gems-ai-launcher" id="gemsAiLauncher" type="button" aria-label="Open GEMS AI Assistant">
-    <span class="gems-ai-launcher-icon">✦</span><span class="gems-ai-launcher-text">GEMS AI</span>
-  </button>
 
   <div class="whatsapp-wrapper" id="whatsappWrapper">
     <button class="whatsapp-close" id="whatsappClose" aria-label="Close WhatsApp">x</button>
@@ -153,6 +164,7 @@
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.52 2 2 6.48 2 12c0 2.1.55 4.15 1.6 5.96L2 22l4.14-1.56A9.96 9.96 0 0012.04 22C17.56 22 22 17.52 22 12S17.56 2 12.04 2zm0 18.2c-1.74 0-3.45-.46-4.95-1.33l-.35-.2-2.45.92-.93 2.38A8.2 8.2 0 014.1 12c0-4.45 3.6-8.1 7.94-8.1 4.37 0 7.86 3.65 7.86 8.1 0 4.45-3.5 8.1-7.86 8.1z"/></svg>
     </a>
   </div>
+
   <script src="whatsapp.js"></script>
   <script type="module" src="updates.js"></script>
 </body>
